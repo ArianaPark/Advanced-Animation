@@ -1,0 +1,17 @@
+body{
+  background-color: white;
+  margin:0;
+}
+
+#wrapperDiv{
+  background-color: #003129;
+  height: 833px;
+  width: 800px;
+  border: solid black 1px;
+  margin:auto;
+  margin-top: 20px;
+}
+
+#button{
+  width:100px;
+}
