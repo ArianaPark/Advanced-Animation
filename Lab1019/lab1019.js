@@ -5,6 +5,9 @@ var ctx;// This is a better name for a global variable
 var imgCounter=0;
 var numImgs = 12;
 var image;
+var animateDiv;
+var innerDiv;
+
 
 function init(){
   //get the canvas
@@ -16,7 +19,14 @@ function init(){
   canvas.style.backgroundColor = 'rgba(255,255,255, 1)';
   // get the context
   ctx = canvas.getContext('2d'); // This is the context
-  //console.log(spriteData);
+
+  animateDiv= document.getElementById("animationDiv");
+  animateDiv.style.width = "200px";
+  animateDiv.style.height="260px";
+  animateDiv.style.border = "3px solid lightblue";
+  //animateDiv.style.backgroundImage = "url('manRunning.png')";
+  innerDiv = document.getElementById("innerDiv");
+  innerDiv.style.backgroundImage = "url('manRunning.png')";
   image = document.createElement("img");
   image.src = "manRunning.png";
   image.addEventListener("load",function(){setInterval(animate,100)});
@@ -29,11 +39,19 @@ function animate(){
     string = string + "0";
   }
   string = string + imgCounter;
-  console.log(string);
   imgCounter++;
   if(imgCounter===numImgs){
     imgCounter = 0;
   }
   var source = spriteData.frames[string].frame; //got info for one frame
-  ctx.drawImage(image,source.x,source.y,source.w,source.h,canvas.width/2,canvas.height/2,source.w,source.h); //draw the one frame with its properties
+  //ctx.drawImage(image,source.x,source.y,source.w,source.h,canvas.width/2,canvas.height/2,source.w,source.h); //draw the one frame with its properties
+  innerDiv.style.width = ""+source.w+"px";
+  innerDiv.style.height = ""+source.h+"px";
+  let marginValueRight = 20;
+  let marginValueLeft = 180-source.w;
+  let marginValueTop = 10;
+  let marginValueBottom =  250-source.h;
+  innerDiv.style.margin = ""+marginValueTop+"px "+marginValueRight+"px "+marginValueBottom+"px "+marginValueLeft+"px";
+  innerDiv.style.backgroundPositionX = ""+(-source.x)+"px";
+  innerDiv.style.backgroundPositionY = ""+(-source.y)+"px";
 }
