@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flocking Lab</title>
+    <link rel="stylesheet" type="text/css" href="mystyles.css">
+    <script src="lab1128.js"></script>
+    <script src="vehicle.js"></script>
+    <script src="boid.js"></script>
+    <script src="flock.js"></script>
+    <script src="vector.js"></script>
+  </head>
+
+  <body>
+    <div id="wrapper">
+      <canvas id = "cnv"></canvas>
+      <div id="menu"><p>Menu</p></div>
+      <div id="settings">
+        <input id="separate-weight" type="range" min="1" max="100" class="slider">
+        <input id="align-weight" type="range" min="1" max="100" class="slider">
+        <input id="cohesion-weight" type="range" min="1" max="100" class="slider">
+        <input id="maxspeed" type="range" min="1" max="100" class="slider">
+        <input id="maxforce" type="range" min="1" max="100" class="slider">
+        <p class="text">Separation Alignment Cohesion Speed Force</p>
+      </div>
+    </div>
+  </body>
+</html>
