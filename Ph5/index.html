@@ -6,15 +6,20 @@
     <script src="mover.js"></script>
     <script src="vector.js"></script>
     <script src="snake.js"></script>
-    <script src="particle.js"></script>
+    <!-- <script src="particle.js"></script> -->
     <script src="projectPH5.js"></script>
   </head>
 
   <body>
-    <canvas id = "cnv"></canvas>
-    <p></p>
-    <button class="button" id="geeseButton">Show/Hide Geese</button>
-    <button class="button" id="bugButton">Show/Hide Bugs</button>
-    <button class="button" id="snakeButton">Show/Hide Snakes</button>
+    <div id="wrapperDiv">
+      <canvas id = "cnv"></canvas>
+      <div id="menuDiv">
+        <button class="button" id="geeseButton" onclick="gbFunction()">Toggle Geese</button>
+        <button class="button" id="bugButton" onclick="bbFunction()">Toggle Bugs</button>
+        <button class="button" id="snakeButton" onclick="sbFunction()">Toggle Snakes</button>
+        <p></p>
+        <input id="bugSize" type="range" min="1" max="100" class="slider">
+      </div>
+    </div>
   </body>
 </html>

@@ -1,25 +1,62 @@
 
 
 body{
-  background-color: black;
+  background-color: white;
   margin:0;
 }
 
 #wrapperDiv{
-  background-color: #003129;
-  height: 833px;
-  width: 800px;
+  /*background-color: #001a33;*/
+  background-color: #691000;
   border: solid black 1px;
-  margin:auto;
-  margin-top: 20px;
+  margin: 30px;
+  padding: 20px;
+}
+
+#menuDiv{
+  float: right;
+  background-color: #A93560;
 }
 
 .button{
-  width:160px;
-  background-color: lightblue;
-  font-size: 14px;
+  background-color: #FFC143;
+  font-size: 16px;
   border-radius: 0px;
   font-family: "Courier";
   padding: 10px;
   margin: 5px;
+  border: solid #FFD86A 2px;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 180px;
+  height: 25px;
+  background: grey;
+  outline: none;
+  opacity: 0.8;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+  margin-top: 10px;
+  margin-left: 12px;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: lightgreen;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: lightgreen;
+  cursor: pointer;
 }

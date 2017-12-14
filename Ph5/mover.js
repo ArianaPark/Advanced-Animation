@@ -59,7 +59,7 @@ class Goose extends Mover{
   }
 
   update(){
-    if(this.eaten){
+    if(this.eaten){ //what happens when it is "dead"
       ctx.save();
       ctx.translate(this.pos.x,this.pos.y);
       let theta = this.vel.getDirection();
@@ -72,36 +72,38 @@ class Goose extends Mover{
       ctx.fill();
       ctx.restore();
       this.decompose--;
-    } else{
+    } else{ //otherwise acts normal
       this.flock();
-      super.update(); //syntactical sugar version of Mover.prototype.update.call(this);
-      for(let j=0;j<bugSystem.length;j++){
-        for(let i=0;i<bugSystem[j].length;i++){ //try to eat bugs
-          if(!bugSystem[j][i].eaten){ //only checks against bugs that aren't eaten
-            let vec = Vector.subGetNew(bugSystem[j][i].pos,this.pos); //distance between attractor and mover
-            if(vec.getMagnitude()<this.radius){ //if goose touches a bug,will turn it to dead bug (red)
-              bugSystem[j][i].eaten = true; //eat the bug
-              this.radius+=0.5; //grow bigger
-            }
-            else if(vec.getMagnitude()<60){ //if bug is close, goose is attracted to it
-              vec.normalize();
-              //vec.multiply(Math.random()*0.4+0.3);
-              this.vel.add(vec);
+      super.update();
+      if(bugsVisible){ //only check bugs when bugs are visible
+        for(let j=0;j<bugSystem.length;j++){ //looks through bug array b/c attracted to them
+          for(let i=0;i<bugSystem[j].length;i++){ //try to eat bugs
+            if(!bugSystem[j][i].eaten){ //only checks against bugs that aren't eaten
+              let vec = Vector.subGetNew(bugSystem[j][i].pos,this.pos); //distance between attractor and mover
+              if(vec.getMagnitude()<this.radius){ //if goose touches a bug,will turn it to dead bug (red)
+                bugSystem[j][i].eaten = true; //eat the bug
+                this.radius+=0.5; //grow bigger
+              }
+              else if(vec.getMagnitude()<60){ //if bug is close, goose is attracted to it
+                vec.normalize();
+                //vec.multiply(Math.random()*0.4+0.3);
+                this.vel.add(vec);
+              }
             }
           }
         }
       }
     }
-
-    for(let j=0;j<snakes.length;j++){ //repelled by snakes
-      var vec2 = Vector.subGetNew(snakes[j].head.pos,this.pos); //distance between attractor and mover
-      if(vec2.getMagnitude()<60){
-        vec2.normalize();
-        vec2.multiply(-(Math.random()*0.4+0.3));
-        this.vel.add(vec2);
+    if(snakesVisible){ //only check against snakes when snakes are visible
+      for(let j=0;j<snakes.length;j++){ //repelled by snakes
+        var vec2 = Vector.subGetNew(snakes[j].head.pos,this.pos); //distance between attractor and mover
+        if(vec2.getMagnitude()<60){
+          vec2.normalize();
+          vec2.multiply(-(Math.random()*0.4+0.3));
+          this.vel.add(vec2);
+        }
       }
     }
-
   }
 
   isDead(){
@@ -210,22 +212,45 @@ class Goose extends Mover{
   }
 }
 
-class Bug extends Mover{ //attract goose
-  constructor(pos,vel,acc,width,height){
-    super(pos,vel,acc);
-    this.width = width;
-    this.height = height;
+class Bug{ //attract goose
+  constructor(pos){
+    this.startPos = pos; //use this as reference if a particle dies
+    this.pos = pos.copy(); //use this to change position
+    this.vel = new Vector(Math.random()-0.5,Math.random()*3-1);
+    this.acc = new Vector(0,Math.random()); //gravity
+    this.lifespan = Math.floor(Math.random()*450)+250;
+    this.eaten = false;
   }
 
-  draw(){
+  draw(){ //as a bug
     ctx.beginPath();
-    ctx.fillStyle = "rgb(100,200,100)";
-    ctx.rect(this.pos.x,this.pos.y,this.height,this.width);
+    ctx.fillStyle = "rgba(100,200,100,"+this.lifespan/100+")";
+    ctx.arc(this.pos.x,this.pos.y,7,0,2*Math.PI,true);
     ctx.fill();
   }
 
   update(){
-    super.update();
+    if(!this.eaten){ //if not eaten
+      //vv particles will just roll off screen
+      this.vel.add(this.acc);
+      this.vel.limit(3);
+      this.pos.add(this.vel);
+      this.draw();
+    } else{ //if it has been eaten, turns to poo and still fades
+      ctx.beginPath();
+      ctx.fillStyle = "rgba(200,0,0,"+this.lifespan/100+")";
+      ctx.arc(this.pos.x,this.pos.y,7,0,2*Math.PI,true);
+      ctx.fill();
+      this.lifespan-=8;
+    }
+    this.lifespan-=2;
+  }
+
+  isDead(){
+    if(this.lifespan<=0){
+      return true;
+    }
+    return false;
   }
 }
 
@@ -256,16 +281,18 @@ class Head extends Mover{ //head of the snake, eats geese
       this.pos.add(this.vel);
       this.draw();
     }
-    for(let i=0;i<geese.length;i++){ //attracted to geese
-      if(geese[i].eaten==false){ //only checks against geese that aren't dead
-        let vec = Vector.subGetNew(geese[i].pos,this.pos); //distance between attractor and mover
-        if(vec.getMagnitude()<(geese[i].radius+this.radius)){ //if snake eats a goose,will disappear, new goose generated
-          geese[i].eaten = true; //goose eaten--> dies (red) and fades
-        }
-        else if(vec.getMagnitude()<60){
-          vec.normalize();
-          vec.multiply(Math.random()*0.4+0.3);
-          this.vel.add(vec);
+    if(geeseVisible){ //only check against geese if visible
+      for(let i=0;i<geese.length;i++){ //attracted to geese
+        if(geese[i].eaten==false){ //only checks against geese that aren't dead
+          let vec = Vector.subGetNew(geese[i].pos,this.pos); //distance between attractor and mover
+          if(vec.getMagnitude()<(geese[i].radius+this.radius)){ //if snake eats a goose,will disappear, new goose generated
+            geese[i].eaten = true; //goose eaten--> dies (red) and fades
+          }
+          else if(vec.getMagnitude()<60){
+            vec.normalize();
+            vec.multiply(Math.random()*0.4+0.3);
+            this.vel.add(vec);
+          }
         }
       }
     }
