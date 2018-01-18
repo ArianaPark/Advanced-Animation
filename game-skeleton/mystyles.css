@@ -1,0 +1,48 @@
+body{
+  background-color: black;
+  margin:0;
+}
+
+#wrapper{
+  background-color: #80ced6;
+  border: solid black 1px;
+  margin: auto;
+}
+
+#infoDiv{
+  background-color: #618685;
+  width: 300px;
+  height: 698px;
+  float:right;
+  color: white;
+  border: solid #80ced6 2px;
+  text-align: center;
+  font-size: 24px;
+}
+
+.infoP{
+  font-size: 16px;
+  color: black;
+  border: solid black 1px;
+  margin: 15px 5px 15px 5px;
+}
+
+#buttonDiv{
+  width: 1000px;
+  height: 200px;
+  background-color: #618685;
+  border: solid #80ced6 2px;
+  color: white;
+  text-align: center;
+  font-size: 24px;
+}
+
+.button{
+  background-color: #fefbd8;
+  color: black;
+  text-align: center;
+  font-size: 16px;
+  padding: 5px;
+  margin: 15px;
+
+}

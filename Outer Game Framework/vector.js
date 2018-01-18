@@ -41,6 +41,14 @@ Vector.subGetNew = function(v1,v2){
   return new Vector(v1.x - v2.x, v1.y - v2.y);
 }
 
+//equal zero
+Vector.prototype.equalZero = function(){
+  if(this.x==0 && this.y==0){
+    return true;
+  }
+  return false;
+}
+
 //multiply,divide
 Vector.prototype.multiply = function(v2){
   this.x = this.x*v2;
