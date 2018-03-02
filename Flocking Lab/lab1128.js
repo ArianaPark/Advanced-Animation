@@ -3,6 +3,7 @@ var canvas;
 var ctx;// This is a better name for a global variable
 //var vehicle; //for seeking section
 var flock;
+//test2
 
 function init(){
   //get the canvas
